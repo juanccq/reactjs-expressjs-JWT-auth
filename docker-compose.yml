@@ -1,0 +1,5 @@
+version: "3"
+
+services:
+	frontend_jwt_auth:
+	backend_jwt_auth:
