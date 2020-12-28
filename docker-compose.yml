@@ -1,5 +1,19 @@
 version: "3"
 
 services:
-	frontend_jwt_auth:
-	backend_jwt_auth:
+  backend_jwt_auth:
+    build: ./backend
+    command: nodemon /app/app.js
+    ports:
+      - "3001:3000"
+    volumes:
+      - "./backend/:/app/"
+  frontend_jwt_auth:
+    build: ./frontend
+    environment:
+      env_file: .env
+      NODE_ENV: development
+    ports:
+      - "3002:3000"
+    volumes:
+      - "./frontend/:/app/"
