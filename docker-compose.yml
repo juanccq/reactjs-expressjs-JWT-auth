@@ -8,6 +8,12 @@ services:
       - "3001:3000"
     volumes:
       - "./backend/:/app/"
+    networks:
+      - jwt_auth_net
+    depends_on:
+      - frontend_jwt_auth
+      - mysql
+
   frontend_jwt_auth:
     build: ./frontend
     environment:
@@ -17,3 +23,30 @@ services:
       - "3002:3000"
     volumes:
       - "./frontend/:/app/"
+    networks:
+      - jwt_auth_net
+
+  mysql:
+    image: mysql:5.7
+    container_name: jwt_mysql
+    restart: unless-stopped
+    tty: true
+    networks:
+      - jwt_auth_net
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_DATABASE: jwt_auth
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - 4036:3306
+    volumes:
+      - ./docker/db_data:/var/lib/mysql
+
+volumes:
+  db_data: {}
+networks:
+  jwt_auth_net:
+    external: false
