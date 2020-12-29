@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const { Sequelize } = require("sequelize");
+const usersRouter = require("./routes/users");
 
 require("dotenv").config();
 
@@ -32,6 +33,8 @@ const connectDb = async () => {
 };
 
 connectDb();
+
+app.use("/users", usersRouter);
 
 app.listen(port, () => {
 	console.log(`App running on ${port}`);
