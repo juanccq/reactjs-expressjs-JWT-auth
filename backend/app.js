@@ -1,7 +1,13 @@
 const express = require("express");
-const app = express();
+const cors = require("cors");
 const { Sequelize } = require("sequelize");
 const usersRouter = require("./routes/users");
+const authRouter = require("./routes/authentication");
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
 
 require("dotenv").config();
 
@@ -10,8 +16,6 @@ const port = process.env.PORT || 3000;
 app.get("/", (req, res) => {
 	res.send("Project started");
 });
-
-console.log("ip: " + process.env.DATABASE_HOST);
 
 const sequelize = new Sequelize(
 	process.env.DATABASE_NAME,
@@ -34,7 +38,8 @@ const connectDb = async () => {
 
 connectDb();
 
-app.use("/users", usersRouter);
+// app.use("/users", usersRouter);
+app.use("/auth", authRouter);
 
 app.listen(port, () => {
 	console.log(`App running on ${port}`);
